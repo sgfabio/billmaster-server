@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
 const cors = require('cors');
+
 mongoose
   .connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
