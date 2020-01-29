@@ -9,6 +9,7 @@ router.use('api/groups', require('./groups'))
 
 
 
+
 // se tudo der errado: (testar)
 router.get('/', function(req, res, next) {
   res.sendFile('../public/index.html');

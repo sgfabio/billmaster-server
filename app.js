@@ -35,9 +35,6 @@ mongoose
   app.use(express.static(path.join(__dirname, 'public')));
   
   //<I001> 
-  // ROUTES MIDDLEWARE STARTS HERE:
-  const authRoutes = require('./routes/auth-routes');
-  app.use('/api', authRoutes);
   
   // ADD SESSION SETTINGS HERE: 
   app.use(session({
@@ -56,16 +53,17 @@ mongoose
   app.use(passport.initialize());
   app.use(passport.session());
   // fim cfg passport
+  
+  app.use(
+    cors({
+      credentials: true,
+      origin: ['http://localhost:3000'],
+    })
+    );
 
-app.use(
-  cors({
-    credentials: true,
-    origin: ['http://localhost:3000'],
-  })
-);
-
-// root router mouting
-const indexRouter = require('./routes/index');
-app.use('/', indexRouter);
-
-module.exports = app;
+    
+    // root router mouting
+    const indexRouter = require('./routes/index');
+    app.use('/', indexRouter);
+    
+    module.exports = app;
