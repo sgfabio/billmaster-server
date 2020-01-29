@@ -103,7 +103,7 @@ authRoutes.post('/logout', (req, res, next) => {
 });
 
 //ROTA DE LOGGEDIN
-authRoutes.get('/loggedin', (req, res, next) => {
+authRoutes.get('/is-auth', (req, res, next) => {
   // req.isAuthenticated() is defined by passport
   if (req.isAuthenticated()) {
       res.status(200).json(req.user);
