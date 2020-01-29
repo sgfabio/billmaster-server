@@ -64,6 +64,6 @@ mongoose
     
     // root router mouting
     const indexRouter = require('./routes/index');
-    app.use('/', indexRouter);
+    app.use('/api', indexRouter);
     
     module.exports = app;
