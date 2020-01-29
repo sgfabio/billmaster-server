@@ -5,7 +5,7 @@ const router = express.Router();
 router.use('/api', require('./auth'));
 
 // todas as outras rotas.
-
+// router.use('/api', require('./despesa'))
 
 
 
