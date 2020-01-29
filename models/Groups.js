@@ -3,7 +3,7 @@ const { Schema, model } = mongoose;
 
 const groupSchema = new Schema(
   {
-    groupName: String,
+    groupName: { type: String, required: true },
     owner: { type: Schema.Types.ObjectId, ref: 'user', required: true },
     members: [{ type: Schema.Types.ObjectId, ref: 'member' }],
     description: String,
