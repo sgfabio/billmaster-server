@@ -23,18 +23,11 @@ router.post('/', (req, res, next) => {
     });
 });
 
-// router get all groups from user...
-
 router.param('groupId', (req, res, next, groupIdParam) => {
   Group.findById(groupIdParam)
     .then((response) => {
       if (!response) {
         res.status(400).send('invalid groupId!');
-        return;
-      } else if (String(response.owner) !== String(req.user._id)) {
-        res
-          .status(401)
-          .send(`you don't have authorization to see this content`);
         return;
       }
     })
@@ -51,7 +44,7 @@ router.get('/:groupId', (req, res, next) => {
   console.log('groupId:', req.groupId);
   Group.findById(req.groupId)
     // .then((response) => {
-      // precisa iterar o array e chamar populate em cada objeto guardado!
+    // precisa iterar o array e chamar populate em cada objeto guardado!
     //   // response.populate(['members, expenses, settles']);
     // })
     .then((response) => {
