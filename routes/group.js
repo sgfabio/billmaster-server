@@ -3,7 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const Group = require('../models/Groups');
 
-const { populateGroup } = require('../Util/groupModelHelper');
+const populateGroup = require('../Util/groupModelHelper');
 
 // TODO: proteger essas rotas com isAuth?
 

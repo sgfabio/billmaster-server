@@ -7,10 +7,10 @@ const groupSchema = new Schema(
     owner: { type: Schema.Types.ObjectId, ref: 'user', required: true },
     members: [String],
     description: String,
-    total: Number,
     expenses: [{ type: Schema.Types.ObjectId, ref: 'expense' }],
     settles: [{ type: Schema.Types.ObjectId, ref: 'settle' }],
     date: Date,
+    total: Number,
   },
   {
     timestamp: true,

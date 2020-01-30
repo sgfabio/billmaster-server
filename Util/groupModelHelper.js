@@ -1,5 +1,7 @@
-exports.populateGroup = (promResponse) => {
-  return promResponse.map(e => {
-    return e.populate(['members', 'expenses', 'settles'])
-  })
-}
+const populateGroup = (promResponse) => {
+  return promResponse.map((e) => {
+    return e.populate(['expenses', 'settles']);
+  });
+};
+
+module.exports = populateGroup;
