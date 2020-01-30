@@ -70,7 +70,7 @@ authRoutes.post('/signup', (req, res, next) => {
 const loginHandler = require('../middleware/passport')
 authRoutes.post('/login', loginHandler);
 
-authRoutes.post('/logout', (req, res, next) => {
+authRoutes.get('/logout', (req, res, next) => {
   // req.logout() is defined by passport
   if (typeof req.user === 'undefined') res.status(400).send('you were not loggedin!')
   req.logout();

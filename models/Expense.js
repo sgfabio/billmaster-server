@@ -4,11 +4,12 @@ const { Schema, model } = mongoose;
 const expenseSchema = new Schema(
   {
     // TODO: relacionar despesa ao grupo
+    group: { type: Schema.Types.ObjectId, ref: 'group' },
     description: String,
     value: Number,
     split: {
-      paidBy: { type: Schema.Types.ObjectId, ref: 'member' },
-      dividedBy: [{ type: Schema.Types.ObjectId, ref: 'member' }],
+      paidBy: String,
+      dividedBy: [String],
     },
     // TODO: método getter que resolve divisão. Checa checked.
   },

@@ -5,7 +5,7 @@ const groupSchema = new Schema(
   {
     groupName: { type: String, required: true },
     owner: { type: Schema.Types.ObjectId, ref: 'user', required: true },
-    members: [{ type: Schema.Types.ObjectId, ref: 'member' }],
+    members: [String],
     description: String,
     total: Number,
     expenses: [{ type: Schema.Types.ObjectId, ref: 'expense' }],

@@ -6,8 +6,8 @@ const settleSchema = new Schema(
     // TODO: relacionar despesa ao grupo
     value: Number,
     group: { type: Schema.Types.ObjectId, ref: 'group' },
-    paidBy: { type: Schema.Types.ObjectId, ref: 'member' },
-    paidTo: { type: Schema.Types.ObjectId, ref: 'member' },
+    paidBy: String,
+    paidTo: String,
   },
   {
     timestamp: true,
