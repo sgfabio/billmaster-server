@@ -72,6 +72,7 @@ authRoutes.post('/login', loginHandler);
 
 authRoutes.post('/logout', (req, res, next) => {
   // req.logout() is defined by passport
+  if (typeof req.user === 'undefined') res.status(400).send('you were not loggedin!')
   req.logout();
   res.status(200).json({ message: 'Log out success!' });
 });
