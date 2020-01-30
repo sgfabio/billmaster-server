@@ -1,4 +1,3 @@
-//<I001>
 const express = require('express');
 const authRoutes = express.Router();
 
@@ -6,6 +5,8 @@ const passport = require('passport');
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
 
+
+// Auth Passport Local strategy route ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 authRoutes.post('/signup', (req, res, next) => {
   const username = req.body.username;
   const password = req.body.password;
@@ -86,6 +87,25 @@ authRoutes.get('/is-auth', (req, res, next) => {
   res.status(403).json({ message: 'Unauthorized' });
 });
 
-module.exports = authRoutes;
 
-//</I001>
+
+// Auth Passport Google strategy route ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+authRoutes.get(
+  "/auth/google",
+  passport.authenticate("google", {
+    scope: [
+      "https://www.googleapis.com/auth/userinfo.profile",
+      "https://www.googleapis.com/auth/userinfo.email"
+    ]
+  })
+);
+authRoutes.get(
+  "/auth/google/callback",  // <<<< ===== O QUE É ISTO??? (Fabio)
+  passport.authenticate("google", {
+    successRedirect: "/private-page",
+    failureRedirect: "/" // here you would redirect to the login page using traditional login approach
+  })
+);
+
+module.exports = authRoutes;

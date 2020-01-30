@@ -3,6 +3,7 @@ const router = express.Router();
 
 // montar rotas de login, signup e logout dentro do arquivo auth.js (que foi montado aqui)
 router.use('/', require('./auth-routes'));
+router.use('/auth/google', require('./auth-routes'));
 router.use('/group', require('./group'))
 router.use('/settle', require('./settle'))
 
