@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true });
-
+const mongoose = require('mongoose');
 const Expense = require('../models/Expense');
 const Group = require('../models/Groups');
 
@@ -21,7 +21,13 @@ router.post('/', (req, res, next) => {
     },
   })
     .then((response) =>
-      Group.findByIdAndUpdate(req.groupId, { $push: { expenses: response } })
+      Group.findByIdAndUpdate(
+        req.groupId,
+        { $push: { expenses: response } },
+        {
+          new: true,
+        }
+      )
     )
     .then((response) =>
       res.status(201).json({
@@ -35,13 +41,15 @@ router.post('/', (req, res, next) => {
     });
 });
 
-// router.param('expenseId', (req, res, next, expenseIdParam) => {
-//   if (!mongoose.Types.ObjectId.isValid(expenseIdParam)) {
-//     res.status(400).json({ msg: 'invalid expenseId!' });
-//     return;
-//   }
-//   req.expenseId = expenseIdParam;
-//   next();
-// });
+router.param('expenseId', (req, res, next, expenseIdParam) => {
+  if (!mongoose.Types.ObjectId.isValid(expenseIdParam)) {
+    res.status(400).json({ msg: 'invalid expenseId!' });
+    return;
+  }
+  req.expenseId = expenseIdParam;
+  next();
+});
+
+router.use('/:expenseId', require('./oneExpense'));
 
 module.exports = router;

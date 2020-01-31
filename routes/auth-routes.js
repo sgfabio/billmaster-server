@@ -35,6 +35,7 @@ authRoutes.post('/signup', (req, res, next) => {
       return;
     }
 
+    // TODO: checar como fazer signup json no body
     const salt = bcrypt.genSaltSync(10);
     const hashPass = bcrypt.hashSync(password, salt);
 

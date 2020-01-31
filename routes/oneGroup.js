@@ -3,14 +3,12 @@ const router = express.Router({ mergeParams: true });
 const Group = require('../models/Groups');
 // get all info from an specific group Id
 router.get('/', (req, res, next) => {
-  // console.log('req ok?', req.groupId);
   Group.findById(req.groupId)
     .populate([
       'expenses',
       // 'settles',
     ])
     .then((response) => {
-      // console.log('GET one group res ok?', response);
       res.status(200).json(response);
     })
     .catch((error) => {
@@ -19,7 +17,6 @@ router.get('/', (req, res, next) => {
     });
 });
 
-// TODO: Quando deletar o grupo, deletar os documentos relacionados de expenses e settles
 router.delete('/', (req, res, next) => {
   Group.findByIdAndDelete(req.groupId)
     .then((response) =>
