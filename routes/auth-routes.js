@@ -88,7 +88,7 @@ authRoutes.get('/is-auth', (req, res, next) => {
 });
 
 
-
+ 
 // Auth Passport Google strategy route ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 authRoutes.get(
@@ -106,6 +106,7 @@ authRoutes.get(
     successRedirect: "/private-page",
     failureRedirect: "/" // here you would redirect to the login page using traditional login approach
   })
+
 );
 
 module.exports = authRoutes;
