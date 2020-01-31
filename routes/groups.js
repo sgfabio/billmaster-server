@@ -3,16 +3,16 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const Group = require('../models/Groups');
 
-const { populateGroups } = require('../Util/groupModelHelper');
 
 // TODO: proteger essas rotas com isAuth?
 
-// TODO: testar se o populate está funcionando quando houver os outros CRUDs
-// todos os grupos do owner x?
 router.get('/', (req, res, next) => {
   const { _id: userId } = req.user;
   Group.find({ owner: userId })
-    .then((response) => populateGroups(response))
+    .populate([
+      'expenses',
+      // 'settles',
+    ])
     .then((response) => res.status(200).json(response))
     .catch((err) => {
       console.log(err);
@@ -31,7 +31,7 @@ router.post('/', (req, res, next) => {
     date,
   })
     .then((response) => {
-      res.json(response);
+      res.status(201).json(response);
     })
     .catch((error) => {
       console.log(error);

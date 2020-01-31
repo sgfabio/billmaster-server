@@ -1,16 +1,14 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true });
-
-// const mongoose = require('mongoose');
 const Group = require('../models/Groups');
-
-const { populateOneGroup } = require('../Util/groupModelHelper');
-
 // get all info from an specific group Id
 router.get('/', (req, res, next) => {
   // console.log('req ok?', req.groupId);
   Group.findById(req.groupId)
-    .then((response) => populateOneGroup(response))
+    .populate([
+      'expenses',
+      // 'settles',
+    ])
     .then((response) => {
       // console.log('GET one group res ok?', response);
       res.status(200).json(response);
@@ -52,5 +50,7 @@ router.put('/', (req, res, next) => {
       next(error);
     });
 });
+
+router.use('/expenses', require('./expenses'));
 
 module.exports = router;
