@@ -4,8 +4,8 @@ const { Schema, model } = mongoose;
 const settleSchema = new Schema(
   {
     // TODO: relacionar despesa ao grupo
-    value: Number,
     group: { type: Schema.Types.ObjectId, ref: 'group' },
+    value: Number,
     paidBy: String,
     paidTo: String,
   },

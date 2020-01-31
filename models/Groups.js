@@ -10,7 +10,7 @@ const groupSchema = new Schema(
     expenses: [{ type: Schema.Types.ObjectId, ref: 'expense' }],
     settles: [{ type: Schema.Types.ObjectId, ref: 'settle' }],
     date: Date,
-    total: Number,
+    // total: Number,
   },
   {
     timestamp: true,
