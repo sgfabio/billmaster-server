@@ -3,10 +3,9 @@ const { Schema, model } = mongoose;
 
 const expenseSchema = new Schema(
   {
-    // TODO: relacionar despesa ao grupo
-    group: { type: Schema.Types.ObjectId, ref: 'group' },
-    description: String,
-    value: Number,
+    group: { type: Schema.Types.ObjectId, ref: 'group', required: true },
+    description: { type: String, required: true },
+    value: { type: Number, required: true },
     split: {
       paidBy: String,
       dividedBy: [String],
