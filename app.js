@@ -5,8 +5,8 @@ const logger = require('morgan');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
-const session = require('express-session'); // I001
-const bcrypt = require('bcrypt'); // I001
+const session = require('express-session');
+const bodyParser = require('body-parser');
 
 mongoose
   .connect(process.env.MONGODB_URI, {
@@ -24,13 +24,10 @@ mongoose
 
 const app = express();
 
-app.use(logger('dev')); // disponibiliza logs de req no terminal
-app.use(express.json()); // disponibiza req.body
-app.use(express.urlencoded({ extended: false }));
+app.use(logger('dev'));
+app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-//<I001>
 
 // mount express-session middleware.
 app.use(
@@ -40,7 +37,6 @@ app.use(
     saveUninitialized: true,
   })
 );
-//</I001>
 // SETUP DO PASSPORT
 require('./configs/passport');
 const passport = require('passport');

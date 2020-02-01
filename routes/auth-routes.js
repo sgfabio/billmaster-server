@@ -5,20 +5,19 @@ const passport = require('passport');
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
 
-
 // Auth Passport Local strategy route ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 authRoutes.post('/signup', (req, res, next) => {
   const username = req.body.username;
   const password = req.body.password;
 
   if (!username || !password) {
-    res.status(400).json({ message: 'Provide username and password' });
+    res.status(400).json({ msg: 'Provide username and password' });
     return;
   }
 
   if (password.length < 7) {
     res.status(400).json({
-      message:
+      msg:
         'Please make your password at least 8 characters long for security purposes.',
     });
     return;
@@ -26,12 +25,12 @@ authRoutes.post('/signup', (req, res, next) => {
 
   User.findOne({ username }, (err, foundUser) => {
     if (err) {
-      res.status(500).json({ message: 'Username check went bad.' });
+      res.status(500).json({ msg: 'Username check went bad.' });
       return;
     }
 
     if (foundUser) {
-      res.status(400).json({ message: 'Username taken. Choose another one.' });
+      res.status(400).json({ msg: 'Username taken. Choose another one.' });
       return;
     }
 
@@ -46,9 +45,7 @@ authRoutes.post('/signup', (req, res, next) => {
 
     newUser.save((err) => {
       if (err) {
-        res
-          .status(400)
-          .json({ message: 'Saving user to database went wrong.' });
+        res.status(400).json({ msg: 'Saving user to database went wrong.' });
         return;
       }
 
@@ -56,7 +53,7 @@ authRoutes.post('/signup', (req, res, next) => {
       // .login() here is actually predefined passport method
       req.login(newUser, (err) => {
         if (err) {
-          res.status(500).json({ message: 'Login after signup went bad.' });
+          res.status(500).json({ msg: 'Login after signup went bad.' });
           return;
         }
 
@@ -69,14 +66,15 @@ authRoutes.post('/signup', (req, res, next) => {
 });
 
 // eu penso que a vantagem de usar um middleware nomeado é facilitar a leitura do código. Agora é mais fácil descobrir onde editar o handling de login
-const loginHandler = require('../middleware/passport')
+const loginHandler = require('../middleware/passport');
 authRoutes.post('/login', loginHandler);
 
 authRoutes.get('/logout', (req, res, next) => {
   // req.logout() is defined by passport
-  if (typeof req.user === 'undefined') res.status(400).send('you were not loggedin!')
+  if (typeof req.user === 'undefined')
+    res.status(400).send('you were not loggedin!');
   req.logout();
-  res.status(200).json({ message: 'Log out success!' });
+  res.status(200).json({ msg: 'Log out success!' });
 });
 
 authRoutes.get('/is-auth', (req, res, next) => {
@@ -85,29 +83,26 @@ authRoutes.get('/is-auth', (req, res, next) => {
     res.status(200).json(req.user);
     return;
   }
-  res.status(403).json({ message: 'Unauthorized' });
+  res.status(403).json({ msg: 'Unauthorized' });
 });
 
-
- 
 // Auth Passport Google strategy route ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 authRoutes.get(
-  "/auth/google",
-  passport.authenticate("google", {
+  '/auth/google',
+  passport.authenticate('google', {
     scope: [
-      "https://www.googleapis.com/auth/userinfo.profile",
-      "https://www.googleapis.com/auth/userinfo.email"
-    ]
+      'https://www.googleapis.com/auth/userinfo.profile',
+      'https://www.googleapis.com/auth/userinfo.email',
+    ],
   })
 );
 authRoutes.get(
-  "/auth/google/callback",  // <<<< ===== O QUE É ISTO??? (Fabio)
-  passport.authenticate("google", {
-    successRedirect: "/private-page",
-    failureRedirect: "/" // here you would redirect to the login page using traditional login approach
+  '/auth/google/callback', // <<<< ===== O QUE É ISTO??? (Fabio)
+  passport.authenticate('google', {
+    successRedirect: '/private-page',
+    failureRedirect: '/', // here you would redirect to the login page using traditional login approach
   })
-
 );
 
 module.exports = authRoutes;
