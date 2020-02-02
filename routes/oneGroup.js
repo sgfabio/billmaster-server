@@ -20,6 +20,16 @@ router.delete('/', async (req, res, next) => {
     const deletedGroup = await Group.findByIdAndDelete(req.groupId);
     // update user here
 
+    const lala = await User.groups.pull(req.groupId);
+
+    // https://stackoverflow.com/questions/49124014/removing-object-with-objectid-from-array-in-mongoose-mongodb
+
+    // https://stackoverflow.com/questions/45256996/node-js-mongoose-delete-a-from-an-id-in-document-array
+
+    // Users.update({}, { $pull: { projectId: { $in: user.projectId }}}
+
+
+
     // const updatedUser = await User.findByIdAndRemove(
     //   req.user._id,
     //   { $pull: {groups: {$in: [req.groupId] } } }
@@ -30,7 +40,7 @@ router.delete('/', async (req, res, next) => {
     res.status(200).json({
       msg: `group ${deletedGroup.groupName} deleted sucessfully`,
       deletedGroup: deletedGroup,
-      updatedUser,
+      lala,
     });
   } catch (error) {
     next(error);
