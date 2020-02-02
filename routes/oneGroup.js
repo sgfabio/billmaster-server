@@ -16,23 +16,24 @@ router.get('/', async (req, res, next) => {
 });
 
 router.delete('/', async (req, res, next) => {
-
   try {
-    const deletedGroup = await Group.findByIdAndDelete(req.groupId)
+    const deletedGroup = await Group.findByIdAndDelete(req.groupId);
     // update user here
-    
-    // const updatedUser = await User.findByIdAndRemove(req.user._id, {
-    //   $pull: {$in: {groups: req.groupId}},
-    // });
+
+    // const updatedUser = await User.findByIdAndRemove(
+    //   req.user._id,
+    //   { $pull: {groups: {$in: [req.groupId] } } }
+    // );
+
+    // { $pull: { "configuration.links": { _id: req.params.linkId } } }
 
     res.status(200).json({
       msg: `group ${deletedGroup.groupName} deleted sucessfully`,
       deletedGroup: deletedGroup,
-      // updatedUser,
-    })
-    
+      updatedUser,
+    });
   } catch (error) {
-    next(error)
+    next(error);
   }
 });
 
