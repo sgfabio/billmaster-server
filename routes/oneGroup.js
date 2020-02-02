@@ -1,51 +1,53 @@
 const express = require('express');
-const router = express.Router({ mergeParams: true });
+const router = express.Router({mergeParams: true});
 const Group = require('../models/Groups');
+const User = require('../models/User');
 // get all info from an specific group Id
-router.get('/', (req, res, next) => {
-  Group.findById(req.groupId)
-    .populate([
+router.get('/', async (req, res, next) => {
+  try {
+    const foundGroup = await Group.findById(req.groupId).populate([
       'expenses',
       // 'settles',
-    ])
-    .then((response) => {
-      res.status(200).json(response);
-    })
-    .catch((error) => {
-      console.log(error);
-      next(error);
-    });
+    ]);
+    res.status(200).json(foundGroup);
+  } catch (error) {
+    next(error);
+  }
 });
 
-router.delete('/', (req, res, next) => {
-  Group.findByIdAndDelete(req.groupId)
-    .then((response) =>
-      res.status(200).json({
-        msg: `group ${response.groupName} deleted sucessfully`,
-        deletedGroup: response,
-      })
-    )
-    .catch((error) => {
-      console.log(error);
-      next(error);
-    });
+router.delete('/', async (req, res, next) => {
+
+  try {
+    const deletedGroup = await Group.findByIdAndDelete(req.groupId)
+    // update user here
+    
+    // const updatedUser = await User.findByIdAndRemove(req.user._id, {
+    //   $pull: {$in: {groups: req.groupId}},
+    // });
+
+    res.status(200).json({
+      msg: `group ${deletedGroup.groupName} deleted sucessfully`,
+      deletedGroup: deletedGroup,
+      // updatedUser,
+    })
+    
+  } catch (error) {
+    next(error)
+  }
 });
 
-router.put('/', (req, res, next) => {
-  Group.findByIdAndUpdate(req.groupId, req.body, {
-    new: true,
-    useFindAndModify: false,
-  })
-    .then((response) => {
-      res.status(200).json({
-        msg: `group ${response.groupName} updated sucessfully`,
-        newObj: response,
-      });
-    })
-    .catch((error) => {
-      console.log(error);
-      next(error);
+router.put('/', async (req, res, next) => {
+  try {
+    const updatedGroup = await Group.findByIdAndUpdate(req.groupId, req.body, {
+      new: true,
     });
+    res.status(200).json({
+      msg: `${updatedGroup.groupName} updated sucessfully`,
+      updatedGroup,
+    });
+  } catch (error) {
+    next(error);
+  }
 });
 
 router.use('/expenses', require('./expenses'));

@@ -10,7 +10,6 @@ const expenseSchema = new Schema(
       paidBy: String,
       dividedBy: [String],
     },
-    // TODO: método getter que resolve divisão. Checa checked.
   },
   {
     timestamp: true,

@@ -2,45 +2,55 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const Group = require('../models/Groups');
-
+const User = require('../models/User');
 
 // TODO: proteger essas rotas com isAuth?
 
-router.get('/', (req, res, next) => {
-  const { _id: userId } = req.user;
-  Group.find({ owner: userId })
-    .populate([
-      'expenses',
+router.get('/', async (req, res, next) => {
+  const {_id: userId} = req.user;
+    try {
+    const foundGroups = await Group.find({owner: userId}).populate([
+      // 'expenses',
       // 'settles',
-    ])
-    .then((response) => res.status(200).json(response))
-    .catch((err) => {
-      next(err);
-    });
+    ]);
+    res.status(200).json(foundGroups);
+  } catch (error) {
+    next(error);
+  }
 });
 
-router.post('/', (req, res, next) => {
-  const { groupName, description, date } = req.body;
-  const { _id: userId } = req.user;
+router.post('/', async (req, res, next) => {
+  const {groupName, description, date} = req.body;
+  const {_id: userId} = req.user;
   if (typeof userId === 'undefined') res.send('you are not loggedIn!');
-  Group.create({
-    groupName,
-    owner: userId,
-    description,
-    date,
-  })
-    .then((response) => {
-      res.status(201).json(response);
-    })
-    .catch((error) => {
-      console.log(error);
-      next(error);
+
+  try {
+    const newGroup = await Group.create({
+      groupName,
+      owner: userId,
+      description,
+      date,
     });
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      {$push: {groups: newGroup}},
+      {new: true}
+    );
+
+    res.status(201).json({
+      msg: `group created sucessfully`,
+      newGroup,
+      updatedUser,
+    });
+  } catch (error) {
+    next(error);
+  }
 });
 
 router.param('groupId', (req, res, next, groupIdParam) => {
   if (!mongoose.Types.ObjectId.isValid(groupIdParam)) {
-    res.status(400).json({ msg: 'invalid groupId!' });
+    res.status(400).json({msg: 'invalid groupId!'});
     return;
   }
   req.groupId = groupIdParam;
