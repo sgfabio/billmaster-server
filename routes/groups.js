@@ -15,15 +15,12 @@ router.get('/', (req, res, next) => {
     ])
     .then((response) => res.status(200).json(response))
     .catch((err) => {
-      console.log(err);
       next(err);
     });
 });
 
 router.post('/', (req, res, next) => {
-  console.log(req.body)
   const { groupName, description, date } = req.body;
-  console.log('ok?', groupName)
   const { _id: userId } = req.user;
   if (typeof userId === 'undefined') res.send('you are not loggedIn!');
   Group.create({
