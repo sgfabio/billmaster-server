@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema, model } = mongoose;
-
+const Group = require('./Groups');
 const expenseSchema = new Schema(
   {
     owner: { type: Schema.Types.ObjectId, ref: 'Group', required: true },
@@ -15,6 +15,27 @@ const expenseSchema = new Schema(
     timestamp: true,
   }
 );
+
+expenseSchema.post('save', async (doc) => {
+  try {
+    await Group.findByIdAndUpdate(doc.owner, { $push: { expenses: doc._id } });
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+});
+
+expenseSchema.post('findOneAndDelete', async (doc) => {
+  console.log('oi, middleware expense')
+  try {
+    await Group.findByIdAndUpdate(doc.owner, {
+      $pull: { expenses: doc._id },
+    });
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+});
 
 const Expense = model('Expense', expenseSchema);
 

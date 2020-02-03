@@ -17,11 +17,12 @@ router.get('/', async (req, res, next) => {
 
 router.delete('/', async (req, res, next) => {
   try {
-    const {groupName} = await Group.findByIdAndDelete(req.groupId);
+    const { groupName } = await Group.findByIdAndDelete(req.groupId);
     res.status(200).json({
       msg: `group ${groupName} deleted sucessfully`,
     });
   } catch (error) {
+    console.log(error);
     next(error);
   }
 });

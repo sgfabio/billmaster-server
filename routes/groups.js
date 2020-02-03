@@ -18,18 +18,18 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-router.post('/', async (req, res, next) => {
+router.post('/', (req, res, next) => {
   const { groupName, description, date } = req.body;
   const { _id: userId } = req.user;
   if (typeof userId === 'undefined') res.send('you are not loggedIn!');
 
   try {
     const newGroup = new Group({
-      groupName,
       owner: userId,
+      groupName,
       description,
       date,
-    })
+    });
     newGroup.save();
     res.status(201).json({
       msg: `group created sucessfully`,

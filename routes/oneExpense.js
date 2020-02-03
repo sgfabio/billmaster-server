@@ -1,20 +1,18 @@
 const express = require('express');
-const router = express.Router({mergeParams: true});
-const Group = require('../models/Groups');
+const router = express.Router({ mergeParams: true });
 const Expense = require('../models/Expense');
 
-// TODO: testar criando uma rota GET
-router.delete('/', (req, res, next) => {
-  Expense.findByIdAndDelete(req.expenseId)
-    .then(() => {
-      Group.findByIdAndRemove(req.expenseId, {$in: 'expenses'});
-      // res.send('oi, rota');
-    })
-    .then(() =>
-      res.status(200).json({
-        msg: `expense deleted sucessfully & removed from group`,
-      })
-    );
+
+router.delete('/', async (req, res, next) => {
+  try {
+    await Expense.findByIdAndDelete(req.expenseId);
+    res.status(200).json({
+      msg: `expense deleted sucessfully & removed from group`,
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
 });
 
 router.put('/', async (req, res, next) => {

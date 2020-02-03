@@ -46,6 +46,7 @@ groupSchema.post('findOneAndDelete', async (doc) => {
     await User.findByIdAndUpdate(doc.owner, { $pull: { groups: doc._id } });
   } catch (error) {
     console.log(error);
+    throw error;
   }
 });
 

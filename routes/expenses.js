@@ -1,18 +1,18 @@
 const express = require('express');
-const router = express.Router({mergeParams: true});
+const router = express.Router({ mergeParams: true });
 const mongoose = require('mongoose');
 const Expense = require('../models/Expense');
 const Group = require('../models/Groups');
 
-router.post('/', async (req, res, next) => {
+router.post('/', (req, res, next) => {
   const {
     description,
     value,
-    split: {paidBy, dividedBy},
+    split: { paidBy, dividedBy },
   } = req.body;
 
   try {
-    const newExpense = await Expense.create({
+    const newExpense = new Expense({
       owner: req.groupId,
       description,
       value,
@@ -21,16 +21,10 @@ router.post('/', async (req, res, next) => {
         dividedBy,
       },
     });
-    const updatedGroup = await Group.findByIdAndUpdate(
-      req.groupId,
-      {$push: {expenses: newExpense}},
-      {new: true}
-    );
-
+    newExpense.save();
     res.status(201).json({
       msg: `expense with value of ${newExpense.value} created sucessfully`,
       newExpense,
-      updatedGroup,
     });
   } catch (error) {
     next(error);
@@ -39,7 +33,7 @@ router.post('/', async (req, res, next) => {
 
 router.param('expenseId', (req, res, next, expenseIdParam) => {
   if (!mongoose.Types.ObjectId.isValid(expenseIdParam)) {
-    res.status(400).json({msg: 'invalid expenseId!'});
+    res.status(400).json({ msg: 'invalid expenseId!' });
     return;
   }
   req.expenseId = expenseIdParam;
