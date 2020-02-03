@@ -13,7 +13,7 @@ router.post('/', async (req, res, next) => {
 
   try {
     const newExpense = await Expense.create({
-      group: req.groupId,
+      owner: req.groupId,
       description,
       value,
       split: {

@@ -5,11 +5,10 @@ const Group = require('../models/Groups');
 const User = require('../models/User');
 
 // TODO: proteger essas rotas com isAuth?
-
 router.get('/', async (req, res, next) => {
-  const {_id: userId} = req.user;
-    try {
-    const foundGroups = await Group.find({owner: userId}).populate([
+  const { _id: userId } = req.user;
+  try {
+    const foundGroups = await Group.find({ owner: userId }).populate([
       // 'expenses',
       // 'settles',
     ]);
@@ -20,28 +19,21 @@ router.get('/', async (req, res, next) => {
 });
 
 router.post('/', async (req, res, next) => {
-  const {groupName, description, date} = req.body;
-  const {_id: userId} = req.user;
+  const { groupName, description, date } = req.body;
+  const { _id: userId } = req.user;
   if (typeof userId === 'undefined') res.send('you are not loggedIn!');
 
   try {
-    const newGroup = await Group.create({
+    const newGroup = new Group({
       groupName,
       owner: userId,
       description,
       date,
-    });
-
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      {$push: {groups: newGroup}},
-      {new: true}
-    );
-
+    })
+    newGroup.save();
     res.status(201).json({
       msg: `group created sucessfully`,
       newGroup,
-      updatedUser,
     });
   } catch (error) {
     next(error);
@@ -50,7 +42,7 @@ router.post('/', async (req, res, next) => {
 
 router.param('groupId', (req, res, next, groupIdParam) => {
   if (!mongoose.Types.ObjectId.isValid(groupIdParam)) {
-    res.status(400).json({msg: 'invalid groupId!'});
+    res.status(400).json({ msg: 'invalid groupId!' });
     return;
   }
   req.groupId = groupIdParam;

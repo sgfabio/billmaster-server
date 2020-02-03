@@ -3,7 +3,7 @@ const { Schema, model } = mongoose;
 
 const settleSchema = new Schema(
   {
-    group: { type: Schema.Types.ObjectId, ref: 'Group' },
+    owner: { type: Schema.Types.ObjectId, ref: 'Group' },
     value: Number,
     paidBy: String,
     paidTo: String,

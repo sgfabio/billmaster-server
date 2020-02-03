@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const { Schema, model } = mongoose;
-const { findOneAndRemove } = require('../Util/updateModels');
 const User = require('./User');
 
 const groupSchema = new Schema(
@@ -33,11 +32,18 @@ const groupSchema = new Schema(
   }
 );
 
+groupSchema.post('save', async (doc) => {
+  try {
+    await User.findByIdAndUpdate(doc.owner, { $push: { groups: doc._id } });
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+});
+
 groupSchema.post('findOneAndDelete', async (doc) => {
   try {
-    const user = await User.findById(doc.owner);
-    findOneAndRemove(user.groups, doc._id);
-    await user.save();
+    await User.findByIdAndUpdate(doc.owner, { $pull: { groups: doc._id } });
   } catch (error) {
     console.log(error);
   }
