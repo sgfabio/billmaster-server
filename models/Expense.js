@@ -26,7 +26,6 @@ expenseSchema.post('save', async (doc) => {
 });
 
 expenseSchema.post('findOneAndDelete', async (doc) => {
-  console.log('oi, middleware expense')
   try {
     await Group.findByIdAndUpdate(doc.owner, {
       $pull: { expenses: doc._id },
