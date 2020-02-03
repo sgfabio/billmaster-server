@@ -3,7 +3,7 @@ const { Schema, model } = mongoose;
 
 const expenseSchema = new Schema(
   {
-    group: { type: Schema.Types.ObjectId, ref: 'group', required: true },
+    group: { type: Schema.Types.ObjectId, ref: 'Group', required: true },
     description: { type: String, required: true },
     value: { type: Number, required: true },
     split: {
@@ -16,6 +16,6 @@ const expenseSchema = new Schema(
   }
 );
 
-const Expense = model('expense', expenseSchema);
+const Expense = model('Expense', expenseSchema);
 
 module.exports = Expense;

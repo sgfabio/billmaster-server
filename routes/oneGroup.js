@@ -17,27 +17,9 @@ router.get('/', async (req, res, next) => {
 
 router.delete('/', async (req, res, next) => {
   try {
-    const deletedGroup = await Group.findByIdAndDelete(req.groupId);
-    const foundUser = await User.findById(req.user._id);
-    const findAndRemove = (array, id) => {
-      for (let i = 0; i < array.length; i += 1) {
-        if (String(array[i]) === String(id)) {
-          array.splice(i, 1);
-          break;
-        }
-      }
-      return array;
-    };
-    findAndRemove(foundUser.groups, req.groupId);
-    await foundUser.save();
-
-    console.log(foundUser);
-    console.log(foundUser.groups);
-
+    const {groupName} = await Group.findByIdAndDelete(req.groupId);
     res.status(200).json({
-      msg: `group ${deletedGroup.groupName} deleted sucessfully`,
-      deletedGroup,
-      updatedUser: foundUser,
+      msg: `group ${groupName} deleted sucessfully`,
     });
   } catch (error) {
     next(error);

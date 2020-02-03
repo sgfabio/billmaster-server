@@ -6,14 +6,14 @@ const userSchema = new Schema(
   {
     username: { type: String, unique: true },
     password: String,
-    groups: [{type: Schema.Types.ObjectId, ref: 'group'}],
-    googleID: String // npm passport-google-oauth20 for google auth strat
+    groups: [{ type: Schema.Types.ObjectId, ref: 'Group' }],
+    googleID: String, // npm passport-google-oauth20 for google auth strat
   },
   {
     timestamps: true,
   }
 );
 
-const User = model('user', userSchema);
+const User = model('User', userSchema);
 
 module.exports = User;

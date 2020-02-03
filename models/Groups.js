@@ -1,9 +1,11 @@
 const mongoose = require('mongoose');
-const {Schema, model} = mongoose;
+const { Schema, model } = mongoose;
+const { findOneAndRemove } = require('../Util/updateModels');
+const User = require('./User');
 
 const groupSchema = new Schema(
   {
-    groupName: {type: String, required: true},
+    groupName: { type: String, required: true },
     owner: {
       type: Schema.Types.ObjectId,
       ref: 'user',
@@ -21,8 +23,8 @@ const groupSchema = new Schema(
       },
     },
     description: String,
-    expenses: [{type: Schema.Types.ObjectId, ref: 'expense'}],
-    settles: [{type: Schema.Types.ObjectId, ref: 'settle'}],
+    expenses: [{ type: Schema.Types.ObjectId, ref: 'Expense' }],
+    settles: [{ type: Schema.Types.ObjectId, ref: 'Settle' }],
     date: Date,
     // total: Number,
   },
@@ -31,6 +33,16 @@ const groupSchema = new Schema(
   }
 );
 
-const Group = model('group', groupSchema);
+groupSchema.post('findOneAndDelete', async (doc) => {
+  try {
+    const user = await User.findById(doc.owner);
+    findOneAndRemove(user.groups, doc._id);
+    await user.save();
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+const Group = model('Group', groupSchema);
 
 module.exports = Group;

@@ -3,7 +3,7 @@ const { Schema, model } = mongoose;
 
 const settleSchema = new Schema(
   {
-    group: { type: Schema.Types.ObjectId, ref: 'group' },
+    group: { type: Schema.Types.ObjectId, ref: 'Group' },
     value: Number,
     paidBy: String,
     paidTo: String,
@@ -13,6 +13,6 @@ const settleSchema = new Schema(
   }
 );
 
-const Settle = model('settle', settleSchema);
+const Settle = model('Settle', settleSchema);
 
 module.exports = Settle;
