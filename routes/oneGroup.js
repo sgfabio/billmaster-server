@@ -1,5 +1,5 @@
 const express = require('express');
-const router = express.Router({mergeParams: true});
+const router = express.Router({ mergeParams: true });
 const Group = require('../models/Groups');
 const User = require('../models/User');
 // get all info from an specific group Id
@@ -18,29 +18,26 @@ router.get('/', async (req, res, next) => {
 router.delete('/', async (req, res, next) => {
   try {
     const deletedGroup = await Group.findByIdAndDelete(req.groupId);
-    // update user here
+    const foundUser = await User.findById(req.user._id);
+    const findAndRemove = (array, id) => {
+      for (let i = 0; i < array.length; i += 1) {
+        if (String(array[i]) === String(id)) {
+          array.splice(i, 1);
+          break;
+        }
+      }
+      return array;
+    };
+    findAndRemove(foundUser.groups, req.groupId);
+    await foundUser.save();
 
-    const lala = await User.groups.pull(req.groupId);
-
-    // https://stackoverflow.com/questions/49124014/removing-object-with-objectid-from-array-in-mongoose-mongodb
-
-    // https://stackoverflow.com/questions/45256996/node-js-mongoose-delete-a-from-an-id-in-document-array
-
-    // Users.update({}, { $pull: { projectId: { $in: user.projectId }}}
-
-
-
-    // const updatedUser = await User.findByIdAndRemove(
-    //   req.user._id,
-    //   { $pull: {groups: {$in: [req.groupId] } } }
-    // );
-
-    // { $pull: { "configuration.links": { _id: req.params.linkId } } }
+    console.log(foundUser);
+    console.log(foundUser.groups);
 
     res.status(200).json({
       msg: `group ${deletedGroup.groupName} deleted sucessfully`,
-      deletedGroup: deletedGroup,
-      lala,
+      deletedGroup,
+      updatedUser: foundUser,
     });
   } catch (error) {
     next(error);
