@@ -12,6 +12,7 @@ const groupSchema = new Schema(
     },
     members: {
       type: [String],
+      unique: true,
       set: (names) => {
         return names.map((name) => {
           const loweredCaseName = name.toLowerCase();
