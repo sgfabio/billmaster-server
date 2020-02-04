@@ -38,7 +38,7 @@ router.put('/', async (req, res, next) => {
     next(error);
   }
 });
-
+router.use('/balance', require('./balance'));
 router.use('/expenses', require('./expenses'));
 router.use('/settles', require('./settles'));
 

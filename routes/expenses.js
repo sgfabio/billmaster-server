@@ -7,7 +7,7 @@ router.post('/', (req, res, next) => {
   const {
     description,
     value,
-    split: { paidBy, dividedBy },
+    split: { paidBy, dividedBy, isDividedByAll },
   } = req.body;
 
   try {
@@ -18,6 +18,7 @@ router.post('/', (req, res, next) => {
       split: {
         paidBy,
         dividedBy,
+        isDividedByAll,
       },
     });
     newExpense.save();
