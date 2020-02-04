@@ -9,7 +9,10 @@ const expenseSchema = new Schema(
     split: {
       paidBy: String,
       dividedBy: [String],
-      isDividedByAll: Boolean,
+      isDividedByAll: {
+        type: Boolean,
+        default: false,
+      },
     },
   },
   {
