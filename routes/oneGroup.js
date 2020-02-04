@@ -1,13 +1,11 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true });
 const Group = require('../models/Groups');
-const User = require('../models/User');
-// get all info from an specific group Id
 router.get('/', async (req, res, next) => {
   try {
     const foundGroup = await Group.findById(req.groupId).populate([
       'expenses',
-      // 'settles',
+      'settles',
     ]);
     res.status(200).json(foundGroup);
   } catch (error) {
@@ -42,5 +40,6 @@ router.put('/', async (req, res, next) => {
 });
 
 router.use('/expenses', require('./expenses'));
+router.use('/settles', require('./settles'));
 
 module.exports = router;

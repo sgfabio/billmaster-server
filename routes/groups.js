@@ -4,13 +4,12 @@ const mongoose = require('mongoose');
 const Group = require('../models/Groups');
 const User = require('../models/User');
 
-// TODO: proteger essas rotas com isAuth?
 router.get('/', async (req, res, next) => {
   const { _id: userId } = req.user;
   try {
     const foundGroups = await Group.find({ owner: userId }).populate([
-      // 'expenses',
-      // 'settles',
+      'expenses',
+      'settles',
     ]);
     res.status(200).json(foundGroups);
   } catch (error) {

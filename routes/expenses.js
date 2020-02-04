@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router({ mergeParams: true });
 const mongoose = require('mongoose');
 const Expense = require('../models/Expense');
-const Group = require('../models/Groups');
 
 router.post('/', (req, res, next) => {
   const {
