@@ -9,13 +9,13 @@ const loginHandler = (req, res, next) => {
     if (err) {
       res
       .status(500)
-      .json({ message: 'Something went wrong authenticating user' });
+      .json({ msg: 'Something went wrong authenticating user' });
       return;
     }
     
     if (!user) {
-      // "failureDetails" contains the error messages
-      // from our logic in "LocalStrategy" { message: '...' }.
+      // "failureDetails" contains the error msgs
+      // from our logic in "LocalStrategy" { msg: '...' }.
       res.status(401).json(failureDetails);
       return;
     }
@@ -23,7 +23,7 @@ const loginHandler = (req, res, next) => {
     // save user in session
     req.login(user, (err) => {
       if (err) {
-        res.status(500).json({ message: 'Session save went bad.' });
+        res.status(500).json({ msg: 'Session save went bad.' });
         return;
       }
       

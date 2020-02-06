@@ -27,10 +27,10 @@ passport.use(
           return next(err);
         }
         if (!user) {
-          return next(null, false, { message: 'Incorrect username' });
+          return next(null, false, { msg: 'Incorrect username' });
         }
         if (!bcrypt.compareSync(password, user.password)) {
-          return next(null, false, { message: 'Incorrect password' });
+          return next(null, false, { msg: 'Incorrect password' });
         }
   
         return next(null, user);
