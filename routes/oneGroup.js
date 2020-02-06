@@ -39,6 +39,8 @@ router.put('/', async (req, res, next) => {
   }
 });
 router.use('/balance', require('./balance'));
+router.use('historySettles', requipre('./historySettles'))
+router.use('historyExpenses', requipre('./historyExpenses'))
 router.use('/expenses', require('./expenses'));
 router.use('/settles', require('./settles'));
 
