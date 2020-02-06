@@ -14,7 +14,7 @@ router.post('/', (req, res, next) => {
     });
     newSettle.save();
     res.status(201).json({
-      msg: `new settle with value of ${newSettle.value}`,
+      message: `new settle with value of ${newSettle.value}`,
       newSettle,
     });
   } catch (error) {
@@ -24,7 +24,7 @@ router.post('/', (req, res, next) => {
 
 router.param('settleId', (req, res, next, settleIdParam) => {
   if (!mongoose.Types.ObjectId.isValid(settleIdParam)) {
-    res.status(400).json({ msg: 'invalid settleId!' });
+    res.status(400).json({ message: 'invalid settleId!' });
     return;
   }
   req.settleId = settleIdParam;

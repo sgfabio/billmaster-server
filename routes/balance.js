@@ -90,7 +90,7 @@ router.get('/', async (req, res, next) => {
       return memberRow;
     });
     res.status(200).json({
-      msg: `balance evaluated`,
+      message: `balance evaluated`,
       queryResult,
     });
   } catch (error) {

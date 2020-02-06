@@ -23,7 +23,7 @@ router.post('/', (req, res, next) => {
     });
     newExpense.save();
     res.status(201).json({
-      msg: `expense with value of ${newExpense.value} created sucessfully`,
+      message: `expense with value of ${newExpense.value} created sucessfully`,
       newExpense,
     });
   } catch (error) {
@@ -33,7 +33,7 @@ router.post('/', (req, res, next) => {
 
 router.param('expenseId', (req, res, next, expenseIdParam) => {
   if (!mongoose.Types.ObjectId.isValid(expenseIdParam)) {
-    res.status(400).json({ msg: 'invalid expenseId!' });
+    res.status(400).json({ message: 'invalid expenseId!' });
     return;
   }
   req.expenseId = expenseIdParam;

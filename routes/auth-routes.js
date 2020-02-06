@@ -11,13 +11,13 @@ authRoutes.post('/signup', (req, res, next) => {
   const password = req.body.password;
 
   if (!username || !password) {
-    res.status(400).json({ msg: 'Provide username and password' });
+    res.status(400).json({ message: 'Provide username and password' });
     return;
   }
 
   if (password.length < 3) {
     res.status(400).json({
-      msg:
+      message:
         'Any password must have at least 3 characters',
     });
     return;
@@ -25,12 +25,12 @@ authRoutes.post('/signup', (req, res, next) => {
 
   User.findOne({ username }, (err, foundUser) => {
     if (err) {
-      res.status(500).json({ msg: 'Username check went bad.' });
+      res.status(500).json({ message: 'Username check went bad.' });
       return;
     }
 
     if (foundUser) {
-      res.status(400).json({ msg: 'Username taken. Choose another one.' });
+      res.status(400).json({ message: 'Username taken. Choose another one.' });
       return;
     }
 
@@ -44,7 +44,7 @@ authRoutes.post('/signup', (req, res, next) => {
 
     newUser.save((err) => {
       if (err) {
-        res.status(400).json({ msg: 'Saving user to database went wrong.' });
+        res.status(400).json({ message: 'Saving user to database went wrong.' });
         return;
       }
 
@@ -52,7 +52,7 @@ authRoutes.post('/signup', (req, res, next) => {
       // .login() here is actually predefined passport method
       req.login(newUser, (err) => {
         if (err) {
-          res.status(500).json({ msg: 'Login after signup went bad.' });
+          res.status(500).json({ message: 'Login after signup went bad.' });
           return;
         }
 
@@ -73,7 +73,7 @@ authRoutes.get('/logout', (req, res, next) => {
   if (typeof req.user === 'undefined')
     res.status(400).send('you were not loggedin!');
   req.logout();
-  res.status(200).json({ msg: 'Log out success!' });
+  res.status(200).json({ message: 'Log out success!' });
 });
 
 authRoutes.get('/is-auth', (req, res, next) => {
@@ -82,7 +82,7 @@ authRoutes.get('/is-auth', (req, res, next) => {
     res.status(200).json(req.user);
     return;
   }
-  res.status(403).json({ msg: 'Unauthorized' });
+  res.status(403).json({ message: 'Unauthorized' });
 });
 
 // Auth Passport Google strategy route ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

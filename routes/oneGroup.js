@@ -17,7 +17,7 @@ router.delete('/', async (req, res, next) => {
   try {
     const { groupName } = await Group.findByIdAndDelete(req.groupId);
     res.status(200).json({
-      msg: `group ${groupName} deleted sucessfully`,
+      message: `group ${groupName} deleted sucessfully`,
     });
   } catch (error) {
     console.log(error);
@@ -31,7 +31,7 @@ router.put('/', async (req, res, next) => {
       new: true,
     });
     res.status(200).json({
-      msg: `${updatedGroup.groupName} updated sucessfully`,
+      message: `${updatedGroup.groupName} updated sucessfully`,
       updatedGroup,
     });
   } catch (error) {

@@ -6,7 +6,7 @@ router.delete('/', async (req, res, next) => {
   try {
     await Expense.findByIdAndDelete(req.expenseId);
     res.status(200).json({
-      msg: `expense deleted sucessfully & removed from group`,
+      message: `expense deleted sucessfully & removed from group`,
     });
   } catch (error) {
     console.log(error);
@@ -24,7 +24,7 @@ router.put('/', async (req, res, next) => {
       }
     );
     res.status(200).json({
-      msg: `expense with the value of ${updatedExpense.value} updated`,
+      message: `expense with the value of ${updatedExpense.value} updated`,
       updatedExpense,
     });
   } catch (error) {

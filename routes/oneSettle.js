@@ -6,7 +6,7 @@ router.delete('/', async (req, res, next) => {
   try {
     await Settle.findByIdAndDelete(req.settleId);
     res.status(200).json({
-      msg: `settle deleted sucessfully & removed from group`,
+      message: `settle deleted sucessfully & removed from group`,
     });
   } catch (error) {
     console.log(error);
@@ -27,7 +27,7 @@ router.put('/', async (req, res, next) => {
     )
     console.log('update settle:', updatedSettle);
     res.status(200).json({
-      msg: `Settle with the value of ${updatedSettle.value} updated`,
+      message: `Settle with the value of ${updatedSettle.value} updated`,
       updatedSettle,
     });
   } catch (error) {

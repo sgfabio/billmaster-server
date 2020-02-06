@@ -31,7 +31,7 @@ router.post('/', (req, res, next) => {
     });
     newGroup.save();
     res.status(201).json({
-      msg: `group created sucessfully`,
+      message: `group created sucessfully`,
       newGroup,
     });
   } catch (error) {
@@ -41,7 +41,7 @@ router.post('/', (req, res, next) => {
 
 router.param('groupId', (req, res, next, groupIdParam) => {
   if (!mongoose.Types.ObjectId.isValid(groupIdParam)) {
-    res.status(400).json({ msg: 'invalid groupId!' });
+    res.status(400).json({ message: 'invalid groupId!' });
     return;
   }
   req.groupId = groupIdParam;
