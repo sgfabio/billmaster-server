@@ -92,8 +92,7 @@ authRoutes.get('/is-auth', async (req, res, next) => {
           model: 'Settle',
         },
       ],
-    })
-    console.log(foundUser);
+    });
     res.status(200).json(foundUser);
     return;
   }
