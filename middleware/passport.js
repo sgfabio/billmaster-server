@@ -8,25 +8,25 @@ const loginHandler = (req, res, next) => {
   passport.authenticate('local', (err, user, failureDetails) => {
     if (err) {
       res
-      .status(500)
-      .json({ message: 'Something went wrong authenticating user' });
+        .status(500)
+        .json({ message: 'Something went wrong authenticating user' });
       return;
     }
-    
+
     if (!user) {
       // "failureDetails" contains the error msgs
       // from our logic in "LocalStrategy" { message: '...' }.
       res.status(401).json(failureDetails);
       return;
     }
-    
+
     // save user in session
     req.login(user, (err) => {
       if (err) {
         res.status(500).json({ message: 'Session save went bad.' });
         return;
       }
-      
+
       // We are now logged in (that's why we can also send req.user)
       res.status(200).json(user);
     });

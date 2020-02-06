@@ -1,7 +1,7 @@
-// <I001> 
+// <I001>
 const User = require('../models/User');
 const LocalStrategy = require('passport-local').Strategy;
-const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 
@@ -12,32 +12,42 @@ passport.serializeUser((loggedInUser, cb) => {
 passport.deserializeUser((userIdFromSession, cb) => {
   User.findById(userIdFromSession, (err, userDocument) => {
     if (err) {
-        return cb(err);
+      return cb(err);
     }
     cb(null, userDocument);
-  });
+  }).populate('groups');
 });
-
 
 // Local Strategy Config
 passport.use(
-    new LocalStrategy((username, password, next) => {
-      User.findOne({ username }, (err, user) => {
-        if (err) {
-          return next(err);
-        }
-        if (!user) {
-          return next(null, false, { message: 'Incorrect username' });
-        }
-        if (!bcrypt.compareSync(password, user.password)) {
-          return next(null, false, { message: 'Incorrect password' });
-        }
-  
-        return next(null, user);
-      });
-    })
-  );
+  new LocalStrategy((username, password, next) => {
+    User.findOne({ username }, (err, user) => {
+      if (err) {
+        return next(err);
+      }
+      if (!user) {
+        return next(null, false, { message: 'Incorrect username' });
+      }
+      if (!bcrypt.compareSync(password, user.password)) {
+        return next(null, false, { message: 'Incorrect password' });
+      }
 
+      return next(null, user);
+    }).populate({
+      path: 'groups',
+      populate: [
+        {
+          path: 'expenses',
+          model: 'Expense',
+        },
+        {
+          path: 'settles',
+          model: 'Settle',
+        },
+      ],
+    });
+  })
+);
 
 // Google OAuth strategy
 passport.use(
@@ -45,26 +55,38 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLI_ID,
       clientSecret: process.env.GOOGLE_SECRET,
-      callbackURL: "/api/auth/google/callback"
+      callbackURL: '/api/auth/google/callback',
     },
     (accessToken, refreshToken, profile, done) => {
       // to see the structure of the data in received response:
-      console.log("Google account details:", profile);
+      console.log('Google account details:', profile);
 
       User.findOne({ googleID: profile.id })
-        .then(user => {
+        .then((user) => {
           if (user) {
-            done(null, user);
+            done(null, user).populate({
+              path: 'groups',
+              populate: [
+                {
+                  path: 'expenses',
+                  model: 'Expense',
+                },
+                {
+                  path: 'settles',
+                  model: 'Settle',
+                },
+              ],
+            });
             return;
           }
 
           User.create({ googleID: profile.id })
-            .then(newUser => {
+            .then((newUser) => {
               done(null, newUser);
             })
-            .catch(err => done(err)); // closes User.create()
+            .catch((err) => done(err)); // closes User.create()
         })
-        .catch(err => done(err)); // closes User.findOne()
+        .catch((err) => done(err)); // closes User.findOne()
     }
   )
-)
+);

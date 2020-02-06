@@ -17,8 +17,7 @@ authRoutes.post('/signup', (req, res, next) => {
 
   if (password.length < 3) {
     res.status(400).json({
-      message:
-        'Any password must have at least 3 characters',
+      message: 'Any password must have at least 3 characters',
     });
     return;
   }
@@ -44,7 +43,9 @@ authRoutes.post('/signup', (req, res, next) => {
 
     newUser.save((err) => {
       if (err) {
-        res.status(400).json({ message: 'Saving user to database went wrong.' });
+        res
+          .status(400)
+          .json({ message: 'Saving user to database went wrong.' });
         return;
       }
 
@@ -76,10 +77,10 @@ authRoutes.get('/logout', (req, res, next) => {
   res.status(200).json({ message: 'Log out success!' });
 });
 
-authRoutes.get('/is-auth', (req, res, next) => {
+authRoutes.get('/is-auth', async (req, res, next) => {
   // req.isAuthenticated() is defined by passport
   if (req.isAuthenticated()) {
-    res.status(200).json(req.user);
+    res.status(200).json(user);
     return;
   }
   res.status(403).json({ message: 'Unauthorized' });
