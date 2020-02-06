@@ -80,7 +80,21 @@ authRoutes.get('/logout', (req, res, next) => {
 authRoutes.get('/is-auth', async (req, res, next) => {
   // req.isAuthenticated() is defined by passport
   if (req.isAuthenticated()) {
-    res.status(200).json(user);
+    const foundUser = await User.findById(req.user._id).populate({
+      path: 'groups',
+      populate: [
+        {
+          path: 'expenses',
+          model: 'Expense',
+        },
+        {
+          path: 'settles',
+          model: 'Settle',
+        },
+      ],
+    })
+    console.log(foundUser);
+    res.status(200).json(foundUser);
     return;
   }
   res.status(403).json({ message: 'Unauthorized' });
