@@ -15,10 +15,10 @@ authRoutes.post('/signup', (req, res, next) => {
     return;
   }
 
-  if (password.length < 7) {
+  if (password.length < 3) {
     res.status(400).json({
       msg:
-        'Please make your password at least 8 characters long for security purposes.',
+        'Any password must have at least 3 characters',
     });
     return;
   }
@@ -34,7 +34,6 @@ authRoutes.post('/signup', (req, res, next) => {
       return;
     }
 
-    // TODO: checar como fazer signup json no body
     const salt = bcrypt.genSaltSync(10);
     const hashPass = bcrypt.hashSync(password, salt);
 
