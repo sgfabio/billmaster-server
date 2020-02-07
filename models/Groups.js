@@ -33,7 +33,6 @@ const groupSchema = new Schema(
 
 groupSchema.post('save', async (doc) => {
   try {
-    console.log('doc?', doc)
     await User.findByIdAndUpdate(doc.owner, { $push: { groups: doc._id } });
   } catch (error) {
     console.log(error);
