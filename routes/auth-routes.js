@@ -77,13 +77,14 @@ authRoutes.get('/logout', (req, res, next) => {
   res.status(200).json({ message: 'Log out success!' });
 });
 
-authRoutes.get('/is-auth', async (req, res, next) => {
+authRoutes.get('/is-auth', (req, res, next) => {
   // req.isAuthenticated() is defined by passport
+  if (typeof req.user === 'undefined')
+    res.status(403).json({ message: 'Unauthorized' });
   if (req.isAuthenticated()) {
     res.status(200).json(req.user);
     return;
   }
-  res.status(403).json({ message: 'Unauthorized' });
 });
 
 // Auth Passport Google strategy route ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
