@@ -3,10 +3,7 @@ const router = express.Router({ mergeParams: true });
 const Group = require('../models/Groups');
 router.get('/', async (req, res, next) => {
   try {
-    const foundGroup = await Group.findById(req.groupId).populate([
-      'expenses',
-      'settles',
-    ]);
+    const foundGroup = await Group.findById(req.groupId)
     res.status(200).json(foundGroup);
   } catch (error) {
     next(error);

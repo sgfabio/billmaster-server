@@ -80,19 +80,7 @@ authRoutes.get('/logout', (req, res, next) => {
 authRoutes.get('/is-auth', async (req, res, next) => {
   // req.isAuthenticated() is defined by passport
   if (req.isAuthenticated()) {
-    const foundUser = await User.findById(req.user._id).populate({
-      path: 'groups',
-      populate: [
-        {
-          path: 'expenses',
-          model: 'Expense',
-        },
-        {
-          path: 'settles',
-          model: 'Settle',
-        },
-      ],
-    });
+    const foundUser = await User.findById(req.user._id)
     res.status(200).json(foundUser);
     return;
   }

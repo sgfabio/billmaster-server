@@ -15,7 +15,7 @@ passport.deserializeUser((userIdFromSession, cb) => {
       return cb(err);
     }
     cb(null, userDocument);
-  }).populate('groups');
+  });
 });
 
 // Local Strategy Config
@@ -33,18 +33,6 @@ passport.use(
       }
 
       return next(null, user);
-    }).populate({
-      path: 'groups',
-      populate: [
-        {
-          path: 'expenses',
-          model: 'Expense',
-        },
-        {
-          path: 'settles',
-          model: 'Settle',
-        },
-      ],
     });
   })
 );
@@ -64,19 +52,7 @@ passport.use(
       User.findOne({ googleID: profile.id })
         .then((user) => {
           if (user) {
-            done(null, user).populate({
-              path: 'groups',
-              populate: [
-                {
-                  path: 'expenses',
-                  model: 'Expense',
-                },
-                {
-                  path: 'settles',
-                  model: 'Settle',
-                },
-              ],
-            });
+            done(null, user)
             return;
           }
 
